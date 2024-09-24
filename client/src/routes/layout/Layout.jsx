@@ -1,19 +1,18 @@
-import "./layout.scss";
-import Navbar from "./components/navbar/navbar.jsx";
-import Homepage from "./routes/homepage/Homepage.jsx";
+import React from "react";
+import Navbar from "../../components/navbar/navbar";
 import { Outlet } from "react-router-dom";
 
-function App() {
+function Layout() {
   return (
     <div className="layout">
       <div className="navbar">
         <Navbar />
       </div>
       <div className="content">
-        <Homepage />
+        <Outlet />
       </div>
     </div>
   );
 }
 
-export default App;
+export default Layout;

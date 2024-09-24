@@ -1,0 +1,14 @@
+.listPage {
+  display: flex;
+  height: 100%;
+  .list {
+    flex: 3;
+    .wrapper {
+      padding-right: 50px;
+    }
+  }
+  .map {
+    flex: 2;
+    background-color: #fcf5f3;
+  }
+}
