@@ -1,0 +1,18 @@
+@import "../../responsive.scss";
+.item {
+  display: flex;
+  gap: 2px;
+  flex-direction: column;
+  label {
+    font-size: 10px;
+  }
+
+  input,
+  select {
+    width: 100px;
+    padding: 10px;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    font-size: 14px;
+  }
+}

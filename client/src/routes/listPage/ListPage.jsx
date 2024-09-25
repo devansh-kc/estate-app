@@ -13,7 +13,7 @@ function ListPage() {
           <Filter />
 
           {data.map((item, idx) => {
-            return <Card key={idx} data={item} />;
+            return <Card key={idx} item={item} />;
           })}
         </div>
       </div>
