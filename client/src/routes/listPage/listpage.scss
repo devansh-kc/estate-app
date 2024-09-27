@@ -1,14 +1,18 @@
+@import "../../responsive.scss";
 .listPage {
   display: flex;
   height: 100%;
   .list {
     flex: 3;
     .wrapper {
+      height: 100%;
       padding-right: 50px;
       display: flex;
       flex-direction: column;
       gap: 50px;
       overflow-y: scroll;
+      padding-bottom: 90px;
+      
     }
   }
   .map {
