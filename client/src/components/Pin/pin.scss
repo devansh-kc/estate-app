@@ -1,0 +1,19 @@
+@import "../../responsive.scss";
+
+.popUpContainer {
+  display: flex;
+  gap: 20px;
+
+  img {
+    width: 64px;
+    height: 64px;
+    object-fit: cover;
+
+    border-radius: 5px;
+  }
+  .textContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+}
