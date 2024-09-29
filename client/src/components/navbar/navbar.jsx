@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import "./navbar.scss";
+
 function Navbar() {
   const [open, setOpen] = useState(false);
   return (
     <nav>
       <div className="left">
         <a href="/" className="logo">
-          <img src="./logo.png" alt="logo" />
+          <img src="/logo.png" alt="logo" />
           <span>Real Estate App</span>
         </a>
         <a href="/">home</a>
