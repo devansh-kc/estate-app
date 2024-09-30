@@ -18,7 +18,7 @@ function ListPage() {
         </div>
       </div>
       <div className="map">
-        <Map item={data} />
+        <Map items={data} />
       </div>
     </div>
   );
