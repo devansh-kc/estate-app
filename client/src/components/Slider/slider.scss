@@ -1,3 +1,5 @@
+@import "../../responsive.scss";
+
 .slider {
   width: 100%;
   height: 350px;
@@ -11,12 +13,19 @@
     left: 0;
     background-color: black;
     display: flex;
+    z-index: 99999;
     .arrow {
       flex: 1;
       color: white;
       justify-content: center;
       display: flex;
       align-items: center;
+      @include sm {
+        width: 30px;
+      }
+      @include md {
+        width: 40px;
+      }
     }
     .close {
       position: absolute;
@@ -50,6 +59,9 @@
   }
   .bigImage {
     flex: 3;
+    @include sm {
+      flex: 2;
+    }
   }
   .smallImages {
     flex: 1;

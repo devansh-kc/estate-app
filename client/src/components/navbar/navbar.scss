@@ -48,12 +48,50 @@ nav {
     align-items: center;
     background-color: #fcf5f3;
     height: 100%;
+
     @include md {
       background-color: transparent;
     }
     a {
       padding: 12px 24px;
       margin: 20px;
+    }
+    .user {
+      display: flex;
+      align-items: center;
+      font-weight: bold;
+      img {
+        width: 40px;
+        height: 40px;
+        margin-right: 20px;
+        object-fit: cover;
+        border-radius: 50%;
+      }
+      span{
+        @include sm{
+          display: none;
+        }
+      }
+      .profile {
+        padding: 12px 24px;
+        background-color: #fece51;
+        cursor: pointer;
+        position: relative;
+        .notification {
+          position: absolute;
+          color: white;
+          background-color: red;
+          width: 25px;
+          height: 25px;
+          align-items: center;
+          display: flex;
+          justify-content: center;
+          top: -8px;
+          right: -8px;
+
+          border-radius: 50%;
+        }
+      }
     }
     .register {
       background-color: #fece51;
@@ -81,23 +119,20 @@ nav {
     justify-content: center;
     align-items: center;
 
-    
     height: 100vh;
     width: 40%;
     transition: all 1s ease;
-    a{
+    a {
       color: white;
     }
-    &.active{
+    &.active {
       right: 0;
     }
 
-    @include sm{
-      a{
+    @include sm {
+      a {
         display: initial;
-
       }
     }
   }
 }
-
