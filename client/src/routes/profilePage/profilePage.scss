@@ -1,3 +1,9 @@
-.profilePage{
-    
+@import "../../responsive.scss";
+.profilePage {
+  .userInfo {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
 }
