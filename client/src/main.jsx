@@ -8,12 +8,19 @@ import ListPage from "./routes/listPage/ListPage.jsx";
 import Layout from "./routes/layout/Layout.jsx";
 import SinglePage from "./routes/singlePage/SinglePage.jsx";
 import ProfilePage from "./routes/profilePage/ProfilePage.jsx";
+import LoginPage from "./routes/login/LoginPage.jsx";
+import SignUp from "./routes/signUp/SignUp.jsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
     children: [
+      { path: "/login", element: <LoginPage /> },
+      {
+        path: "/signup",
+        element: <SignUp />,
+      },
       {
         path: "/",
         element: <Homepage />,
