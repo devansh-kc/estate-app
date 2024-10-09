@@ -3,6 +3,7 @@ import cookieParser from "cookie-parser";
 import authRouter from "./routes/auth.route.js";
 import postRoute from "./routes/posts.route.js";
 import userRoute from "./routes/user.route.js";
+import cors  from "cors"
 const app = express();
 app.listen(8000, () => {
   console.log("server has started");
@@ -10,7 +11,10 @@ app.listen(8000, () => {
 
 app.use(express.json());
 app.use(cookieParser());
-
+app.use(cors({
+  origin: process.env.CORS_ORIGIN,
+  credentials: true,
+}))
 
 
 

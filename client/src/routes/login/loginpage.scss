@@ -58,5 +58,8 @@
     img {
       width: 100%;
     }
+    @include sm{
+      display: none;
+    }
   }
 }
