@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./loginpage.scss";
 import { useDispatch } from "react-redux";
 import { userLogin } from "../../../ReduxSlice/userSlice";
@@ -9,6 +9,8 @@ function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
+
+  const navigate = useNavigate();
   async function handleSubmit(e) {
     e.preventDefault();
     const userInformation = {
@@ -21,12 +23,12 @@ function LoginPage() {
         password,
       });
       if (result.data.success) {
-
-      // console.log(result.data)
-        dispatch(userLogin(result.userInfo)); 
-        setError("")
+        dispatch(userLogin(result.data.userInfo));
+        setError("");
+        navigate("/")
       }
     } catch (error) {
+      console.log(error);
       setError(error.response.data.message);
     }
   }

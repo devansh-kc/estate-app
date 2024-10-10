@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import "./navbar.scss";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 function Navbar() {
   const [open, setOpen] = useState(false);
-  const user = true;
+  const userData = useSelector((state) => state.user.userInfo);
   return (
     <nav>
       <div className="left">
@@ -18,13 +19,16 @@ function Navbar() {
         <a href="/">agents</a>
       </div>
       <div className="right">
-        {user ? (
+        {userData ? (
           <div className="user">
             <img
-              src="https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-              alt=""
+              src={
+                userData.avatar ||
+                "https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI="
+              }
+              alt={userData.username}
             />
-            <span>John Doe</span>
+            <span>{userData.username}</span>
             <Link to="/profile" className="profile">
               <div className="notification">3</div>
               <span>Profile</span>
@@ -32,10 +36,10 @@ function Navbar() {
           </div>
         ) : (
           <>
-            <a href="/">Sign In</a>
-            <a href="/" className="register">
+            <Link to="/login">Sign In</Link>
+            <Link to="/signup" className="register">
               Sign Up
-            </a>
+            </Link>
           </>
         )}
 
@@ -48,8 +52,8 @@ function Navbar() {
           <a href="/">about</a>
           <a href="/">contact</a>
           <a href="/">agents</a>
-          <a href="/">Sign In</a>
-          <a href="/">Sign Up</a>
+          <Link to="/login">Sign In</Link>
+          <Link href="/signup">Sign Up</Link>
         </div>
       </div>
     </nav>

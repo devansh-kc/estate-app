@@ -38,6 +38,7 @@ async function login(req, res) {
       .status(200)
       .json({ userInfo, success: true });
   } catch (error) {
+    console.log(error)
     return res
       .status(500)
       .json({ message: "error from login", error, success: false });
