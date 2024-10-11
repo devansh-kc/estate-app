@@ -10,36 +10,65 @@ import {
   Layout,
   SinglePage,
   ProfilePage,
-  SignUp
+  SignUp,
 } from "./routes/index.js";
 import { Provider } from "react-redux";
 import store from "../reduxStore/Store.js";
+import AuthLayout from "./routes/layout/AuthLayout.jsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
     children: [
-      { path: "/login", element: <LoginPage /> },
+      {
+        path: "/login",
+        element: (
+          <AuthLayout authentication={false}>
+            <LoginPage />
+          </AuthLayout>
+        ),
+      },
       {
         path: "/signup",
-        element: <SignUp />,
+        element: (
+          <AuthLayout authentication={false}>
+            <SignUp />
+          </AuthLayout>
+        ),
       },
       {
         path: "/",
-        element: <Homepage />,
+        element: (
+          <AuthLayout authentication={false}>
+            <Homepage />{" "}
+          </AuthLayout>
+        ),
       },
       {
         path: "/list",
-        element: <ListPage />,
+        element: (
+          <AuthLayout authentication={false}>
+            <ListPage />
+          </AuthLayout>
+        ),
       },
       {
         path: "/list/:id",
-        element: <SinglePage />,
+        element: (
+          <AuthLayout authentication={false}>
+            <SinglePage />
+          </AuthLayout>
+        ),
       },
       {
         path: "profile",
-        element: <ProfilePage />,
+
+        element: (
+          <AuthLayout authentication>
+            <ProfilePage />
+          </AuthLayout>
+        ),
       },
     ],
   },

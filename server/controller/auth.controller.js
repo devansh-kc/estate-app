@@ -19,7 +19,9 @@ async function login(req, res) {
     });
 
     if (!user) {
-      return res.status(404).json({message:"user didn't exist",success:false});
+      return res
+        .status(404)
+        .json({ message: "user didn't exist", success: false });
     }
     const validPassword = bcrypt.compareSync(password, user.password);
     if (!validPassword) {
@@ -38,7 +40,7 @@ async function login(req, res) {
       .status(200)
       .json({ userInfo, success: true });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return res
       .status(500)
       .json({ message: "error from login", error, success: false });
@@ -54,7 +56,18 @@ async function register(req, res) {
   }
 
   const hashedPassword = await bcrypt.hash(password, 9);
+  const existingUser = await prisma.user.findUnique({
+    where: {
+      email: email,
+    },
+  });
 
+  if (existingUser) {
+    return res.status(401).json({
+      message: "this user already exists please use another email or username",
+      success: false,
+    });
+  }
   try {
     const newUser = await prisma.user.create({
       data: {
