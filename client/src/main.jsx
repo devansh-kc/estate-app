@@ -1,6 +1,5 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App.jsx";
 import "./index.scss";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import {
@@ -11,10 +10,11 @@ import {
   SinglePage,
   ProfilePage,
   SignUp,
+  RequireAuth,
 } from "./routes/index.js";
 import { Provider } from "react-redux";
 import store from "../reduxStore/Store.js";
-import AuthLayout from "./routes/layout/AuthLayout.jsx";
+import UpdateProfilePage from "./routes/profileUpdate/UpdateProfilePage.jsx";
 
 const router = createBrowserRouter([
   {
@@ -23,52 +23,37 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/login",
-        element: (
-          <AuthLayout authentication={false}>
-            <LoginPage />
-          </AuthLayout>
-        ),
+        element: <LoginPage />,
       },
       {
         path: "/signup",
-        element: (
-          <AuthLayout authentication={false}>
-            <SignUp />
-          </AuthLayout>
-        ),
+        element: <SignUp />,
       },
       {
         path: "/",
-        element: (
-          <AuthLayout authentication={false}>
-            <Homepage />{" "}
-          </AuthLayout>
-        ),
+        element: <Homepage />,
       },
       {
         path: "/list",
-        element: (
-          <AuthLayout authentication={false}>
-            <ListPage />
-          </AuthLayout>
-        ),
+        element: <ListPage />,
       },
       {
         path: "/list/:id",
-        element: (
-          <AuthLayout authentication={false}>
-            <SinglePage />
-          </AuthLayout>
-        ),
+        element: <SinglePage />,
+      },
+    ],
+  },
+  {
+    path: "/",
+    element: <RequireAuth />,
+    children: [
+      {
+        path: "/profile",
+        element: <ProfilePage />,
       },
       {
-        path: "profile",
-
-        element: (
-          <AuthLayout authentication>
-            <ProfilePage />
-          </AuthLayout>
-        ),
+        path: "/updateProfile",
+        element: <UpdateProfilePage />,
       },
     ],
   },
