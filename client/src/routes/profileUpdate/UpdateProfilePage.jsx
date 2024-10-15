@@ -1,11 +1,40 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import "./updateProfile.scss";
+import UploadWidget from "../../components/UploadWidget/UploadWidget";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function UpdateProfilePage() {
   const [error, setError] = useState("");
   const currentUser = useSelector((state) => state.user.userInfo);
-  async function handleSubmit() {}
+  const [avatar, setAvatar] = useState(currentUser.avatar);
+  const navigate = useNavigate();
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+
+    const { username, email, password } = Object.fromEntries(formData);
+
+    try {
+      const response = await axios.put(
+        `http://localhost:8000/api/user/${currentUser.id}`,
+        {
+          username,
+          email,
+          password,
+          avatar: avatar,
+        }
+      );
+      console.log(response);
+      // updateUser(res.data)
+      navigate("/profile");
+    } catch (err) {
+      console.log(err);
+      setError(err.response.data?.message);
+    }
+  }
   return (
     <div className="profileUpdatePage">
       <div className="formContainer">
@@ -40,22 +69,22 @@ function UpdateProfilePage() {
       <div className="sideContainer">
         <img
           src={
-            currentUser.avatar ||
+            avatar ||
             "https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI="
           }
           alt={currentUser.username}
           className="avatar"
         />
-        {/* <UploadWidget
+        <UploadWidget
           uwConfig={{
-            cloudName: "lamadev",
-            uploadPreset: "estate",
+            cloudName: "dcjh2tkr8",
             multiple: false,
-            maxImageFileSize: 2000000,
+            uploadPreset: "realEstate",
+            // maxImageFileSize: 2000000,
             folder: "avatars",
           }}
           setState={setAvatar}
-        /> */}
+        />
       </div>
     </div>
   );

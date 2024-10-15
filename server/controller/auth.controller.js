@@ -51,9 +51,11 @@ async function logout(req, res) {
 }
 async function register(req, res) {
   const { username, email, password } = req.body;
+
   if (!username || !email || !password) {
     return res.status(400).json("please enter the required details");
   }
+  const avatarPath = req.files?.avatar[0]?.path;
 
   const hashedPassword = await bcrypt.hash(password, 9);
   const existingUser = await prisma.user.findUnique({
