@@ -17,19 +17,28 @@ function LoginPage() {
       email: email,
       password: password,
     };
+
+    console.log(document.cookie);
     try {
-      const result = await axios.post("http://localhost:8000/api/auth/login", {
-        email,
-        password,
-      });
+      const result = await axios.post(
+        "http://localhost:8000/api/auth/login",
+
+        {
+          email,
+          password,
+        },
+        {
+          withCredentials: true,
+        }
+      );
       if (result.data.success) {
         dispatch(userLogin(result.data.userInfo));
         setError("");
-        navigate("/")
+        navigate("/");
       }
     } catch (error) {
       console.log(error);
-      setError(error.response.data.message);
+      // setError(error.response.data.message);
     }
   }
   return (

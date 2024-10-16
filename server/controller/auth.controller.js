@@ -32,13 +32,14 @@ async function login(req, res) {
       expiresIn: age,
     });
     const { password: userPassword, ...userInfo } = user;
-    return res
-      .cookie("cookie", token, {
-        httpOnly: true,
-        maxAge: age,
-      })
-      .status(200)
-      .json({ userInfo, success: true });
+
+    res.cookie("cookie", token, {
+      httpOnly: true,
+      maxAge: age,
+      sameSite: "none",
+      secure: process.env.NODE_ENV === "production", // Add this to use secure flag only in production
+    });
+    return res.status(200).json({ userInfo, success: true });
   } catch (error) {
     console.log(error);
     return res

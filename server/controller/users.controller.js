@@ -44,7 +44,6 @@ export async function updateUser(req, res) {
 export async function deleteUser(req, res) {
   const id = req.params.id;
   const tokenId = req.userId;
-
   if (id !== tokenId) {
     return res.status(403).json({ message: "not authorized" });
   }
