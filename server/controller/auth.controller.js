@@ -36,8 +36,8 @@ async function login(req, res) {
     res.cookie("cookie", token, {
       httpOnly: true,
       maxAge: age,
-      sameSite: "none",
-      secure: process.env.NODE_ENV === "production", // Add this to use secure flag only in production
+      sameSite: "None",
+      secure: true,
     });
     return res.status(200).json({ userInfo, success: true });
   } catch (error) {
@@ -48,7 +48,8 @@ async function login(req, res) {
   }
 }
 async function logout(req, res) {
-  res.clearCookie("token").status(200).json({ message: "LogOut SuccessFul" });
+  res.clearCookie("cookie");
+  res.status(200).json({ message: "LogOut SuccessFul" });
 }
 async function register(req, res) {
   const { username, email, password } = req.body;
@@ -58,7 +59,7 @@ async function register(req, res) {
   }
   const avatarPath = req.files?.avatar[0]?.path;
 
-  const hashedPassword = await bcrypt.hash(password, 9);
+  const hashedPassword = bcrypt.hashSync(password, 9);
   const existingUser = await prisma.user.findUnique({
     where: {
       email: email,

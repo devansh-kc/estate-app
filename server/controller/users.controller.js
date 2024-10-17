@@ -11,28 +11,31 @@ export async function getUsers(req, res) {
   }
 }
 export async function updateUser(req, res) {
-  console.log(req);
   const id = req.params.id;
+  console.log(req.userId);
   const tokenId = req.userId;
   const { username, email, password, avatar } = req.body;
 
   if (id !== tokenId) {
     return res.status(403).json({ message: "not authorized" });
   }
-  let hashedPassoword = null;
+
+  let hashedPassword = null;
 
   try {
-    hashedPassoword = bcrypt.hashSync(password, 9);
+    console.log(password)
+    hashedPassword = await bcrypt.hashSync(password, 9);
     const updatedUser = await prisma.user.update({
-      where: { id },
+      where: { id: id },  
       data: {
         ...(username && { username: username }),
         ...(email && { email: email }),
-        ...(hashedPassoword && { password: hashedPassoword }),
+        ...(hashedPassword && { password: hashedPassword }),
         ...(avatar && { avatar: avatar }),
       },
     });
     const { password: userPassword, ...rest } = updatedUser;
+    console.log(userPassword)
 
     return res.status(200).json({ rest });
   } catch (error) {

@@ -4,12 +4,15 @@ import "./updateProfile.scss";
 import UploadWidget from "../../components/UploadWidget/UploadWidget";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { userLogin } from "../../../ReduxSlice/userSlice";
 
 function UpdateProfilePage() {
   const [error, setError] = useState("");
   const currentUser = useSelector((state) => state.user.userInfo);
   const [avatar, setAvatar] = useState(currentUser.avatar);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -25,10 +28,13 @@ function UpdateProfilePage() {
           email,
           password,
           avatar: avatar,
+        },
+        {
+          withCredentials: true,
         }
       );
-      console.log(response);
-      // updateUser(res.data)
+      const UpdatedUserInfo = response.data.rest;
+      dispatch(userLogin(UpdatedUserInfo));
       navigate("/profile");
     } catch (err) {
       console.log(err);

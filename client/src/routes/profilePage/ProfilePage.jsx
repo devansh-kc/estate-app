@@ -14,7 +14,11 @@ function ProfilePage() {
   const dispatch = useDispatch();
   async function logOutHandler(e) {
     e.preventDefault();
-    await axios.post("http://localhost:8000/api/auth/logout");
+    await axios.post(
+      "http://localhost:8000/api/auth/logout",
+      {},
+      { withCredentials: true }
+    );
     dispatch(userLogOut());
 
     navigate("/");

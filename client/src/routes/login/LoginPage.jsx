@@ -18,7 +18,6 @@ function LoginPage() {
       password: password,
     };
 
-    console.log(document.cookie);
     try {
       const result = await axios.post(
         "http://localhost:8000/api/auth/login",
