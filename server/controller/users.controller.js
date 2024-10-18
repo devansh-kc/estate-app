@@ -12,7 +12,6 @@ export async function getUsers(req, res) {
 }
 export async function updateUser(req, res) {
   const id = req.params.id;
-  console.log(req.userId);
   const tokenId = req.userId;
   const { username, email, password, avatar } = req.body;
 
@@ -23,10 +22,11 @@ export async function updateUser(req, res) {
   let hashedPassword = null;
 
   try {
-    console.log(password)
-    hashedPassword = await bcrypt.hashSync(password, 9);
+    if (password) {
+      hashedPassword = await bcrypt.hash(password, 9);
+    }
     const updatedUser = await prisma.user.update({
-      where: { id: id },  
+      where: { id: id },
       data: {
         ...(username && { username: username }),
         ...(email && { email: email }),
@@ -35,7 +35,6 @@ export async function updateUser(req, res) {
       },
     });
     const { password: userPassword, ...rest } = updatedUser;
-    console.log(userPassword)
 
     return res.status(200).json({ rest });
   } catch (error) {
