@@ -9,12 +9,10 @@ import {
 const router = express.Router();
 import { AuthenticationMiddleware } from "../middleware/auth.middleware.js";
 
-router.use(AuthenticationMiddleware);
-
-router.post("/", AddPost);
-router.get("/:id", getPosts);
+router.get("/", getPosts);
 router.get("/:id", getPost);
+router.post("/", AuthenticationMiddleware, AddPost);
 
-router.put("/:id", updatePost);
-router.delete("/:id", DeletePost);
+router.put("/:id", AuthenticationMiddleware, updatePost);
+router.delete("/:id", AuthenticationMiddleware, DeletePost);
 export default router;

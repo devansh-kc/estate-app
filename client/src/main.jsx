@@ -15,6 +15,7 @@ import {
 import { Provider } from "react-redux";
 import store from "../reduxStore/Store.js";
 import UpdateProfilePage from "./routes/profileUpdate/UpdateProfilePage.jsx";
+import NewPostPage from "./routes/new Posts Page/NewPostPage.jsx";
 
 const router = createBrowserRouter([
   {
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
       {
         path: "/list/:id",
         element: <SinglePage />,
+      },
+      {
+        path: "/newPost",
+      element: <NewPostPage />,
       },
     ],
   },

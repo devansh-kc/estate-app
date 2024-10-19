@@ -39,7 +39,8 @@ model Post {
   user      User     @relation(fields: [UserId], references: [id])
   UserId    String   @db.ObjectId
 
-  createdAt DateTime @default(now())
+  createdAt   DateTime     @default(now())
+  PostDetails PostDetails?
 }
 
 enum Type {
@@ -52,4 +53,18 @@ enum Property {
   flat
   land
   banglow
+}
+
+model PostDetails {
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  description String
+  utilities   String?
+  pet         String?
+  income      String?
+  size        Int?
+  school      Int?
+  bus         Int?
+  resturant   Int?
+  post        Post    @relation(fields: [PostId], references: [id])
+  PostId      String  @unique @db.ObjectId
 }

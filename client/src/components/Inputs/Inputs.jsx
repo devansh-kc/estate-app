@@ -1,10 +1,10 @@
 import "./inputs.scss";
 
-function TextInput({ type = "text", LabelId, placeholder, name, LabelName }) {
+function TextInput({ type = "text", placeholder = "", name = "", LabelName }) {
   return (
     <div className="item">
       <label htmlFor={name}>{LabelName}</label>
-      <input type={type} id={LabelId} name={name} placeholder={placeholder} />
+      <input type={type} id={name} name={name} placeholder={placeholder} />
     </div>
   );
 }
@@ -13,7 +13,7 @@ function OptionInput({ LabelName, name, option = [] }) {
   return (
     <div className="item">
       <label htmlFor={name}>{LabelName}</label>
-      <select name={name} id={name}>
+      <select name={name} id={name} defaultChecked="false">
         {option.map((optionName, idx) => {
           return (
             <option key={idx} value={optionName}>

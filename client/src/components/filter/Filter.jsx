@@ -14,7 +14,6 @@ function Filter() {
           name="city"
           LabelName="Locations"
           placeholder="city location"
-          LabelId="city"
         />
       </div>
 
