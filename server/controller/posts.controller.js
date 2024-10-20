@@ -65,12 +65,15 @@ async function AddPost(req, res) {
         },
       },
     });
-    res.status(200).json(newPost);
+    res.status(200).json({ newPost, success: true });
   } catch (error) {
     console.log("error from Add  posts", error);
     res
       .status(500)
-      .json({ message: "something went wrong while fetching the user" });
+      .json({
+        message: "something went wrong while fetching the user",
+        success: false,
+      });
   }
 }
 async function DeletePost(req, res) {

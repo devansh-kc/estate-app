@@ -31,7 +31,7 @@ function UploadWidget({ uwConfig, setPublicId, setState }) {
         uwConfig,
         (error, result) => {
           if (!error && result && result.event === "success") {
-            setState(result.info.secure_url);
+            setState((prev) => [...prev, result.info.secure_url]);
           }
         }
       );

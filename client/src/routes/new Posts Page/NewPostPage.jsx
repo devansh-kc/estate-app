@@ -8,21 +8,69 @@ import {
   OptionInput,
   TextInput,
 } from "../../components/Inputs/Inputs";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function NewPostPage() {
   const [error, setError] = useState("");
   const [images, setImages] = useState([]);
-  const [value, setValue] = useState();
-  async function handleSubmit() {}
+  const [value, setValue] = useState("");
+  const navigate = useNavigate();
+  async function handleSubmit(e) {
+    const formData = new FormData(e.target);
+    e.preventDefault();
 
-  function Input({ title, type, htmlFor }) {
-    return (
-      <div className="item">
-        <label htmlFor={htmlFor}>{title}</label>
-        <input id={htmlFor} name={htmlFor} type={type} />
-      </div>
-    );
+    const inputs = Object.fromEntries(formData);
+    try {
+      const result = await axios.post(
+        "http://localhost:8000/api/posts/",
+        {
+          postData: {
+            title: inputs.title,
+            price: parseInt(inputs.price),
+            address: inputs.address,
+            city: inputs.city,
+            bedroom: parseInt(inputs.bedroom),
+            bathroom: parseInt(inputs.bathroom),
+            type: inputs.type,
+            property: inputs.property,
+            latitude: inputs.latitude,
+            longitude: inputs.longitude,
+            img: images,
+            PostDetails: {
+              desc: value,
+              utilities: inputs.utilities,
+              pet: inputs.pet,
+              income: inputs.income,
+              size: parseInt(inputs.size),
+              school: parseInt(inputs.school),
+              bus: parseInt(inputs.bus),
+              restaurant: parseInt(inputs.restaurant),
+            },
+          },
+        },
+        {
+          withCredentials: true,
+        }
+      );
+      if (result.data.success) {
+        setError("");
+        navigate("/" + result.data.id);
+      }
+    } catch (error) {
+      setError(error);
+      console.log(error);
+    }
   }
+
+  // function Input({ name, LabelName }) {
+  //   return (
+  //     <div className="item">
+  //       <label htmlFor={name}>{LabelName}</label>
+  //       <input id={name} name={name} type={name} />
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="newPostPage">
@@ -36,7 +84,14 @@ function NewPostPage() {
 
             <div className="item description">
               <label htmlFor="desc">Description</label>
-              <ReactQuill theme="snow" onChange={setValue} value={value} />
+              <textarea
+                rows={5}
+                cols={5}
+                name="desc"
+                value={value}
+                onChange={(e) => setValue(e.target.value)}
+              />
+              {/* <ReactQuill theme="snow" onChange={setValue} value={value} /> */}
             </div>
             <TextInput LabelName="City" name="city" />
             <NumberInput LabelName="Bedroom Number" name="bedroom" min={1} />
@@ -46,60 +101,34 @@ function NewPostPage() {
             <OptionInput
               LabelName="Type"
               name="type"
-              option={["Buy", "Rent"]}
+              option={["buy", "rent"]}
             />
 
-            <OptionInput LabelName="Type" name="property" option={[]} />
-            <div className="item">
-              <label htmlFor="type">Property</label>
-              <select name="property">
-                <option value="apartment">Apartment</option>
-                <option value="house">House</option>
-                <option value="condo">Condo</option>
-                <option value="land">Land</option>
-              </select>
-            </div>
+            <OptionInput
+              LabelName="Property"
+              name="property"
+              option={["condo", "flat", "land", "banglow"]}
+            />
+            <OptionInput
+              LabelName="Utilities Policy"
+              name="utilities"
+              option={[
+                "Owner is responsible",
+                "Tenant is responsible",
+                "Shared",
+              ]}
+            />
+            <OptionInput
+              LabelName="Pet Policy"
+              name="pet"
+              option={["Allowed", "Not Allowed"]}
+            />
+            <TextInput name="income" LabelName="Income" />
+            <NumberInput name="size" LabelName="Total Size (sqft)" min={0} />
+            <NumberInput name="school" min={0} LabelName="School" />
+            <NumberInput name="bus" min={0} LabelName="Bus" />
+            <NumberInput LabelName="Restaurant" name="restaurant" min={0} />
 
-            <div className="item">
-              <label htmlFor="utilities">Utilities Policy</label>
-              <select name="utilities">
-                <option value="owner">Owner is responsible</option>
-                <option value="tenant">Tenant is responsible</option>
-                <option value="shared">Shared</option>
-              </select>
-            </div>
-            <div className="item">
-              <label htmlFor="pet">Pet Policy</label>
-              <select name="pet">
-                <option value="allowed">Allowed</option>
-                <option value="not-allowed">Not Allowed</option>
-              </select>
-            </div>
-            <div className="item">
-              <label htmlFor="income">Income Policy</label>
-              <input
-                id="income"
-                name="income"
-                type="text"
-                placeholder="Income Policy"
-              />
-            </div>
-            <div className="item">
-              <label htmlFor="size">Total Size (sqft)</label>
-              <input min={0} id="size" name="size" type="number" />
-            </div>
-            <div className="item">
-              <label htmlFor="school">School</label>
-              <input min={0} id="school" name="school" type="number" />
-            </div>
-            <div className="item">
-              <label htmlFor="bus">bus</label>
-              <input min={0} id="bus" name="bus" type="number" />
-            </div>
-            <div className="item">
-              <label htmlFor="restaurant">Restaurant</label>
-              <input min={0} id="restaurant" name="restaurant" type="number" />
-            </div>
             <button className="sendButton">Add</button>
             {error && <span>error</span>}
           </form>
@@ -112,8 +141,8 @@ function NewPostPage() {
         <UploadWidget
           uwConfig={{
             multiple: true,
-            cloudName: "lamadev",
-            uploadPreset: "estate",
+            cloudName: "dcjh2tkr8",
+            uploadPreset: "realEstate",
             folder: "posts",
           }}
           setState={setImages}

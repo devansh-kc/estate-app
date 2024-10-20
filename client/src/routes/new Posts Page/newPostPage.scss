@@ -1,14 +1,14 @@
 @import "../../responsive.scss";
 
 .newPostPage {
-  overflow: auto;
-  height: 100%;
+  height: 100vh;
   display: flex;
+  overflow: auto;
 
   .formContainer {
     flex: 3;
-    overflow: auto;
-    max-height: 100vh;
+
+    overflow: scroll;
 
     .wrapper {
       margin: 30px 50px 100px 0px;
@@ -25,8 +25,6 @@
           flex-direction: column;
           gap: 5px;
 
-          label {
-          }
 
           input {
             padding: 20px;
@@ -40,17 +38,17 @@
 
           &.description {
             width: 100%;
-            height: 320px;
+            height: max-content;
 
-            .quill > .ql-container > .ql-editor {
-              height: 200px;
+            textarea{
+              resize: none;
+              height: 150px;
               font-size: 16px;
             }
           }
         }
         .sendButton {
-          padding: 20px;
-          margin: 10px;
+          width: 30%;
           border-radius: 5px;
           border: none;
           background-color: teal;
