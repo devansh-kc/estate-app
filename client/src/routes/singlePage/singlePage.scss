@@ -3,7 +3,8 @@
 .singlePageContainer {
   display: flex;
 
-  height: 100%;
+  height: 100vh;
+  overflow: auto;
   // background-color: #fcf5f3;
   .features::-webkit-scrollbar {
     display: none;
@@ -21,7 +22,7 @@
   }
 
   .details {
-    height: 100%;
+    height: 100vh;
     overflow: scroll;
     flex: 3;
     @include md {
@@ -94,7 +95,7 @@
   .features {
     overflow-y: scroll;
     background-color: #fcf5f3;
-    height: 100%;
+    height: 100vh;
     flex: 2;
 
     background-color: #fcf5f3;

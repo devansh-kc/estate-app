@@ -4,9 +4,14 @@ import "leaflet/dist/leaflet.css";
 import { MapContainer, TileLayer, useMap } from "react-leaflet";
 import Pin from "../Pin/Pin";
 function Map({ items }) {
+  console.log(items[0])
   return (
     <MapContainer
-      center={[51.5074, -0.1278]}
+      center={
+        items.length === 1
+          ? [items[0].latitude, items[0].longitude]
+          : [52.4797, -1.90269]
+      }
       zoom={10}
       scrollWheelZoom={false}
       className="map"

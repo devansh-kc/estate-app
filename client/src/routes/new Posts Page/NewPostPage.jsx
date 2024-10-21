@@ -37,16 +37,16 @@ function NewPostPage() {
             latitude: inputs.latitude,
             longitude: inputs.longitude,
             img: images,
-            PostDetails: {
-              desc: value,
-              utilities: inputs.utilities,
-              pet: inputs.pet,
-              income: inputs.income,
-              size: parseInt(inputs.size),
-              school: parseInt(inputs.school),
-              bus: parseInt(inputs.bus),
-              restaurant: parseInt(inputs.restaurant),
-            },
+          },
+          PostDetails: {
+            description: value,
+            utilities: inputs.utilities,
+            pet: inputs.pet,
+            income: inputs.income,
+            size: parseInt(inputs.size),
+            school: parseInt(inputs.school),
+            bus: parseInt(inputs.bus),
+            resturant: parseInt(inputs.restaurant),
           },
         },
         {
@@ -55,7 +55,7 @@ function NewPostPage() {
       );
       if (result.data.success) {
         setError("");
-        navigate("/" + result.data.id);
+        navigate("/list/" + result.data.newPost.id);
       }
     } catch (error) {
       setError(error);

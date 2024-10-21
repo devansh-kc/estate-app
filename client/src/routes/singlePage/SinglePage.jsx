@@ -1,5 +1,5 @@
 import React, { Children } from "react";
-import { useParams } from "react-router-dom";
+import { useLoaderData, useParams } from "react-router-dom";
 import { singlePostData, userData } from "../../../data/dummydata";
 import "./singlePage.scss";
 import Slider from "../../components/Slider/Slider";
@@ -31,7 +31,7 @@ function FeatureComponent({ image, content, spanContent }) {
 function RoomSizeComponent({ icon, spanContent }) {
   return (
     <div className="size">
-      <span >{icon}</span>
+      <span>{icon}</span>
 
       <span>{spanContent}</span>
     </div>
@@ -52,29 +52,33 @@ function NearbyPlacesComponent({ icon, spanContent, text }) {
 
 function SinglePage() {
   const { id } = useParams();
+  const singlePageData = useLoaderData();
+  console.log(singlePageData);
 
   return (
     <div className="singlePageContainer">
       <div className="details">
         <div className="wrapper">
-          <Slider images={singlePostData.images} />
+          <Slider images={singlePageData.img} />
           <div className="info">
             <div className="top">
               <div className="post">
-                <h1>{singlePostData.title}</h1>
+                <h1>{singlePageData.title}</h1>
                 <div className="address">
-                  <MapPin /> <span>{singlePostData.address}</span>
+                  <MapPin /> <span>{singlePageData.address}</span>
                 </div>
                 <div className="price">
-                  <DollarSign /> {singlePostData.price}
+                  <DollarSign /> {singlePageData.price}
                 </div>
               </div>
               <div className="user">
-                <img src={userData.img} alt={userData.name} />
-                <span>{userData.name}</span>
+                <img src={singlePageData.user.avatar} alt={userData.name} />
+                <span>{singlePageData.user.username}</span>
               </div>
             </div>
-            <div className="bottom">{singlePostData.description}</div>
+            <div className="bottom">
+              {singlePageData.PostDetails.description}
+            </div>
           </div>
         </div>
       </div>
@@ -85,28 +89,34 @@ function SinglePage() {
             <div className="listVertical">
               <FeatureComponent
                 spanContent="Utilities"
-                content="Renter is responsible"
+                content={singlePageData.PostDetails.utilities}
                 image="/utility.png"
               />
               <FeatureComponent
                 spanContent="Pet policy"
-                content="Pets Allowed"
+                content={singlePageData.PostDetails.pet}
                 image="/pet.png"
               />{" "}
               <FeatureComponent
                 spanContent="Property Fees"
-                content="Must have 3x rent in total household income"
+                content={singlePageData.PostDetails.income}
                 image="/fee.png"
               />
             </div>
             <p className="title">Sizes</p>
             <div className="sizes">
-              <RoomSizeComponent icon={<Ruler />} spanContent="800sqm" />
+              <RoomSizeComponent
+                icon={<Ruler />}
+                spanContent={`${singlePageData.PostDetails.size} sqm`}
+              />
               <RoomSizeComponent
                 icon={<BedDouble />}
-                spanContent="2 bedrooms"
+                spanContent={`${singlePageData.bedroom} bedrooms`}
               />
-              <RoomSizeComponent icon={<Bath />} spanContent="1 Bathroom" />
+              <RoomSizeComponent
+                icon={<Bath />}
+                spanContent={`${singlePageData.bathroom} Bathroom`}
+              />
             </div>
             <p className="title">Nearby Places</p>
 
@@ -114,24 +124,36 @@ function SinglePage() {
               <NearbyPlacesComponent
                 icon={<School />}
                 spanContent="School"
-                text="250m away "
+                text={`${
+                  singlePageData.PostDetails.school > 999
+                    ? singlePageData.PostDetails.school / 1000 + "km"
+                    : singlePageData.PostDetails.school + "m"
+                } away `}
               />
 
               <NearbyPlacesComponent
                 icon={<Bus />}
                 spanContent="Bus Stop"
-                text="200m away "
+                text={`${
+                  singlePageData.PostDetails.bus > 999
+                    ? singlePageData.PostDetails.bus/1000 + "km"
+                    : singlePageData.PostDetails.bus + "m"
+                } away `}
               />
 
               <NearbyPlacesComponent
                 icon={<UtensilsCrossed />}
                 spanContent="Resturant"
-                text="100m away "
+                text={`${
+                  singlePageData.PostDetails.resturant > 999
+                    ? singlePageData.PostDetails.resturant / 1000 + "km"
+                    : singlePageData.PostDetails.resturant + "m"
+                } away `}
               />
             </div>
             <p className="title">Location</p>
             <div className="mapContainer">
-              <Map items={[singlePostData]} />
+              <Map items={[singlePageData]} />
             </div>
             <div className="buttons">
               <button>
