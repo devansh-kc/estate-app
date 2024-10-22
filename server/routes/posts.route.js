@@ -6,8 +6,8 @@ import {
   getPost,
   getPosts,
 } from "../controller/posts.controller.js";
-const router = express.Router();
 import { AuthenticationMiddleware } from "../middleware/auth.middleware.js";
+const router = express.Router();
 
 router.get("/", getPosts);
 router.get("/:id", getPost);

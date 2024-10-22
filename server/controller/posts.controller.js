@@ -1,23 +1,28 @@
 import prisma from "../lib/prisma.js";
 
 async function getPosts(req, res) {
-  const { id } = req.params;
-  if (id !== req.userId) {
-    return res.status(40).json({ message: "Not authorized" });
-  }
+  const query = req.query;
+  console.log(query);
 
   try {
     const posts = await prisma.post.findMany({
       where: {
-        UserId: id,
+        city: query.city || undefined,
+        type: query.type || undefined,
+        property: query.property || undefined,
+        bedroom: parseInt(query.bedroom) || undefined,
+        price: {
+          gte: parseInt(query.minPrice) || 0,
+          lte: parseInt(query.maxPrice) || 1000000,
+        },
       },
     });
-    return res.status(200).json(posts);
+    return res.status(200).json({ posts });
   } catch (error) {
-    console.log("error from get posts", error);
-    res
-      .status(500)
-      .json({ message: "something went wrong while fetching the user" });
+    // console.log("error from get posts", error);
+    // res
+    //   .status(500)
+    //   .json({ message: "something went wrong while fetching the user" });
   }
 }
 async function updatePost(req, res) {
@@ -68,12 +73,10 @@ async function AddPost(req, res) {
     res.status(200).json({ newPost, success: true });
   } catch (error) {
     console.log("error from Add  posts", error);
-    res
-      .status(500)
-      .json({
-        message: "something went wrong while fetching the user",
-        success: false,
-      });
+    res.status(500).json({
+      message: "something went wrong while fetching the user",
+      success: false,
+    });
   }
 }
 async function DeletePost(req, res) {
