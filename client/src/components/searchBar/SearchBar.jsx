@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Search } from "lucide-react";
 import "./searchbar.scss";
+import { Link } from "react-router-dom";
 function SearchBar() {
   const [Query, setQuery] = useState({
     type: "Buy",
@@ -43,9 +44,13 @@ function SearchBar() {
           max={10000000}
           name="max price"
         />
-        <button>
-          <Search className="searchIcon"/>
-        </button>
+        <Link
+          to={`/list?type=${Query.type}&city=${Query.city}&minPrice=${Query.minPrice}&maxPrice=${Query.maxPrice}`}
+        >
+          <button>
+            <Search className="searchIcon" />
+          </button>
+        </Link>
       </form>
     </div>
   );

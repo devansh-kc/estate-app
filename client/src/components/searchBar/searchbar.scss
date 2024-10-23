@@ -66,17 +66,25 @@
         }
       }
     }
-    button {
-      border: none;
+    a {
       flex: 1;
       background-color: #fece51;
-      .searchIcon {
-        color: white;
-        font-size: 24px;
-      }
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
-      @include sm {
-        padding: 10px;
+      button {
+        background-color: #fece51;
+        border: none;
+        .searchIcon {
+          text-align: center;
+          color: white;
+          font-size: 24px;
+        }
+
+        @include sm {
+          padding: 10px;
+        }
       }
     }
   }
