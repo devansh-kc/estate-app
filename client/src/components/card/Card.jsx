@@ -11,10 +11,11 @@ import {
   Save,
 } from "lucide-react";
 function Cart({ item }) {
+  console.log(item)
   return (
     <div className="card">
       <Link to={`/${item.id}`} className="imageContainer">
-        <img src={item.img} alt={item.title} />
+        <img src={item.img[0]} alt={item.title} />
       </Link>
       <div className="textContainer">
         <h2 className="title">

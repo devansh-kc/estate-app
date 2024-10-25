@@ -2,7 +2,6 @@ import prisma from "../lib/prisma.js";
 
 async function getPosts(req, res) {
   const query = req.query;
-  console.log(query);
 
   try {
     const posts = await prisma.post.findMany({
@@ -17,12 +16,15 @@ async function getPosts(req, res) {
         },
       },
     });
-    return res.status(200).json({ posts });
+    console.log(posts);
+    setTimeout(() => {
+      return res.status(200).json({ posts });
+    }, 3000);
   } catch (error) {
-    // console.log("error from get posts", error);
-    // res
-    //   .status(500)
-    //   .json({ message: "something went wrong while fetching the user" });
+    console.log("error from get posts", error);
+    res
+      .status(500)
+      .json({ message: "something went wrong while fetching the user" });
   }
 }
 async function updatePost(req, res) {
@@ -49,7 +51,6 @@ async function getPost(req, res) {
         PostDetails: true,
       },
     });
-    res.status(200).json(post);
   } catch (error) {
     console.log("error ", error);
     res
