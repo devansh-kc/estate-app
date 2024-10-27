@@ -21,13 +21,13 @@ function UpdateProfilePage() {
     const { username, email, password } = Object.fromEntries(formData);
 
     try {
-      const response = await axios.put(
+      const response = await axios.patch(
         `http://localhost:8000/api/user/${currentUser.id}`,
         {
           username,
           email,
           password,
-          avatar: avatar,
+          avatar: avatar[0],
         },
         {
           withCredentials: true,

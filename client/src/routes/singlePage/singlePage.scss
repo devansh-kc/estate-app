@@ -5,20 +5,10 @@
 
   height: 100vh;
   overflow: auto;
-  // background-color: #fcf5f3;
-  .features::-webkit-scrollbar {
-    display: none;
-  }
-  .details::-webkit-scrollbar {
-    display: none;
-  }
 
   @include md {
     flex-direction: column;
-    overflow: scroll;
-    ::-webkit-scrollbar {
-      display: none;
-    }
+    overflow: auto;
   }
 
   .details {

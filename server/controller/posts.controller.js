@@ -16,10 +16,8 @@ async function getPosts(req, res) {
         },
       },
     });
-    console.log(posts);
-    setTimeout(() => {
-      return res.status(200).json({ posts });
-    }, 3000);
+
+    return res.status(200).json({ posts });
   } catch (error) {
     console.log("error from get posts", error);
     res
@@ -51,6 +49,7 @@ async function getPost(req, res) {
         PostDetails: true,
       },
     });
+    return res.status(200).json(post);
   } catch (error) {
     console.log("error ", error);
     res
@@ -61,6 +60,14 @@ async function getPost(req, res) {
 async function AddPost(req, res) {
   const body = req.body;
   const token = req.userId;
+  console.log("BODY", body);
+  if (!body || !body.postData || !body.PostDetails) {
+    return res.status(400).json({
+      message:
+        "Please fill all the required fields before clicking the add button",
+      success: false,
+    });
+  }
   try {
     const newPost = await prisma.post.create({
       data: {
@@ -71,15 +78,16 @@ async function AddPost(req, res) {
         },
       },
     });
-    res.status(200).json({ newPost, success: true });
+    return res.status(200).json({ newPost, success: true });
   } catch (error) {
     console.log("error from Add  posts", error);
     res.status(500).json({
-      message: "something went wrong while fetching the user",
+      message: "something went wrong while creating post",
       success: false,
     });
   }
 }
+
 async function DeletePost(req, res) {
   const { id } = req.params;
   const existingPost = await prisma.post.findUnique({

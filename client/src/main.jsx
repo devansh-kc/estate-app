@@ -7,10 +7,10 @@ import {
   Homepage,
   ListPage,
   Layout,
-  SinglePage,
   ProfilePage,
   SignUp,
   RequireAuth,
+  SinglePage
 } from "./routes/index.js";
 import { Provider } from "react-redux";
 import store from "../reduxStore/Store.js";
@@ -42,7 +42,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/list/:id",
-        element: <SinglePage />,
+        element: <SinglePage/>,
         loader: singlePageLoader,
       },
       {

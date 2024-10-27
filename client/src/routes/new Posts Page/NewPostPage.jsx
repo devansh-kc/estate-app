@@ -53,13 +53,11 @@ function NewPostPage() {
           withCredentials: true,
         }
       );
-      if (result.data.success) {
-        setError("");
-        navigate("/list/" + result.data.newPost.id);
-      }
+      setError("");
+      navigate(`/list/${result.data.newPost.id}`);
     } catch (error) {
-      setError(error);
       console.log(error);
+      setError(error.message);
     }
   }
 
@@ -79,7 +77,7 @@ function NewPostPage() {
         <div className="wrapper">
           <form onSubmit={handleSubmit}>
             <TextInput LabelName="Title" name="title" />
-            <TextInput LabelName="Price" name="price" />
+            <NumberInput LabelName="Price" name="price" min={1} />
             <TextInput LabelName="Address" name="address" />
 
             <div className="item description">

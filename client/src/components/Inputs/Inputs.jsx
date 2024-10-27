@@ -14,11 +14,12 @@ function OptionInput({ LabelName, name, option = [] }) {
     <div className="item">
       <label htmlFor={name}>{LabelName}</label>
       <select name={name} id={name} defaultChecked="false">
+        <option value="">select an Option</option>
         {option.map((optionName, idx) => {
           return (
-            <option key={idx} value={optionName}>
-              {optionName}
-            </option>
+              <option key={idx} value={optionName}>
+                {optionName}
+              </option>
           );
         })}
       </select>

@@ -10,11 +10,10 @@ import {
   MessageCircle,
   Save,
 } from "lucide-react";
-function Cart({ item }) {
-  console.log(item)
+function Card({ item }) {
   return (
     <div className="card">
-      <Link to={`/${item.id}`} className="imageContainer">
+      <Link to={`/list/${item.id}`} className="imageContainer">
         <img src={item.img[0]} alt={item.title} />
       </Link>
       <div className="textContainer">
@@ -55,4 +54,4 @@ function Cart({ item }) {
   );
 }
 
-export default Cart;
+export default Card;

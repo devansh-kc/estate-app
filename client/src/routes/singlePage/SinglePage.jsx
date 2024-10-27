@@ -53,7 +53,8 @@ function NearbyPlacesComponent({ icon, spanContent, text }) {
 function SinglePage() {
   const { id } = useParams();
   const singlePageData = useLoaderData();
-  console.log(singlePageData);
+  console.log(singlePageData)
+  
 
   return (
     <div className="singlePageContainer">
@@ -72,7 +73,10 @@ function SinglePage() {
                 </div>
               </div>
               <div className="user">
-                <img src={singlePageData.user.avatar} alt={userData.name} />
+                <img
+                  src={singlePageData.user.avatar}
+                  alt={singlePageData.user.username}
+                />
                 <span>{singlePageData.user.username}</span>
               </div>
             </div>
@@ -136,7 +140,7 @@ function SinglePage() {
                 spanContent="Bus Stop"
                 text={`${
                   singlePageData.PostDetails.bus > 999
-                    ? singlePageData.PostDetails.bus/1000 + "km"
+                    ? singlePageData.PostDetails.bus / 1000 + "km"
                     : singlePageData.PostDetails.bus + "m"
                 } away `}
               />
