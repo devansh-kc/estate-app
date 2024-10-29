@@ -60,25 +60,34 @@ async function getPost(req, res) {
 async function AddPost(req, res) {
   const body = req.body;
   const token = req.userId;
-  console.log("BODY", body);
-  if (!body || !body.postData || !body.PostDetails) {
-    return res.status(400).json({
-      message:
-        "Please fill all the required fields before clicking the add button",
-      success: false,
-    });
+
+  for (const [key, value] of Object.entries(body.postData)) {
+    if (value === null || value === undefined || value === "") {
+      return res.status(400).json({
+        message: `Please fill all the ${key} fields before clicking the add button`,
+        success: false,
+      });
+    }
+  }
+  for (const [key, value] of Object.entries(body.PostDetails)) {
+    if (value === null || value === undefined || value === "") {
+      return res.status(400).json({
+        message: `Please fill  the ${key} field before clicking the add button`,
+        success: false,
+      });
+    }
   }
   try {
-    const newPost = await prisma.post.create({
-      data: {
-        ...body.postData,
-        UserId: token,
-        PostDetails: {
-          create: body.PostDetails,
-        },
-      },
-    });
-    return res.status(200).json({ newPost, success: true });
+    //   const newPost = await prisma.post.create({
+    //     data: {
+    //       ...body.postData,
+    //       UserId: token,
+    //       PostDetails: {
+    //         create: body.PostDetails,
+    //       },
+    //     },
+    //   });
+    return res.status(200).json("success");
   } catch (error) {
     console.log("error from Add  posts", error);
     res.status(500).json({
