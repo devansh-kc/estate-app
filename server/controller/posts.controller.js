@@ -60,6 +60,7 @@ async function getPost(req, res) {
 async function AddPost(req, res) {
   const body = req.body;
   const token = req.userId;
+  
 
   for (const [key, value] of Object.entries(body.postData)) {
     if (value === null || value === undefined || value === "") {
