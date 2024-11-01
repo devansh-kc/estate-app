@@ -60,7 +60,6 @@ async function getPost(req, res) {
 async function AddPost(req, res) {
   const body = req.body;
   const token = req.userId;
-  
 
   for (const [key, value] of Object.entries(body.postData)) {
     if (value === null || value === undefined || value === "") {
@@ -79,16 +78,16 @@ async function AddPost(req, res) {
     }
   }
   try {
-    //   const newPost = await prisma.post.create({
-    //     data: {
-    //       ...body.postData,
-    //       UserId: token,
-    //       PostDetails: {
-    //         create: body.PostDetails,
-    //       },
-    //     },
-    //   });
-    return res.status(200).json("success");
+    const newPost = await prisma.post.create({
+      data: {
+        ...body.postData,
+        UserId: token,
+        PostDetails: {
+          create: body.PostDetails,
+        },
+      },
+    });
+    return res.status(200).json({ newPost });
   } catch (error) {
     console.log("error from Add  posts", error);
     res.status(500).json({

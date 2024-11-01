@@ -53,7 +53,6 @@ function NearbyPlacesComponent({ icon, spanContent, text }) {
 function SinglePage() {
   const { id } = useParams();
   const singlePageData = useLoaderData();
-  console.log(singlePageData)
   
 
   return (

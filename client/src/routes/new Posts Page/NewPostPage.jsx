@@ -57,7 +57,7 @@ function NewPostPage() {
       navigate(`/list/${result.data.newPost.id}`);
     } catch (error) {
       console.log(error);
-      setError(error.message);
+      setError(error);
     }
   }
 
@@ -128,7 +128,7 @@ function NewPostPage() {
             <NumberInput LabelName="Restaurant" name="restaurant" min={0} />
 
             <button className="sendButton">Add</button>
-            {error && <span>error</span>}
+            {error && <span>{error}</span>}
           </form>
         </div>
       </div>

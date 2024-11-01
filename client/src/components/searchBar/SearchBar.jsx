@@ -4,15 +4,24 @@ import "./searchbar.scss";
 import { Link } from "react-router-dom";
 function SearchBar() {
   const [Query, setQuery] = useState({
-    type: "Buy",
+    type: "buy",
     location: "",
-    minPrice: "",
-    maxPrice: "",
+    minPrice: 0,
+    maxPrice: 0,
   });
 
-  const types = ["Buy", "Rent"];
+  const types = ["buy", "rent"];
   function switchOption(option) {
     setQuery((prevOption) => ({ ...prevOption, type: option }));
+  }
+  function handleChange(event) {
+    setQuery((prevOption) => {
+      console.log(prevOption);
+      return {
+        ...prevOption,
+        [event.target.name]: event.target.value,
+      };
+    });
   }
   return (
     <div className="searchBar">
@@ -28,24 +37,31 @@ function SearchBar() {
         ))}
       </div>
 
-      <form action="">
-        <input type="text" placeholder="City Location" name="location" />
+      <form>
+        <input
+          type="text"
+          placeholder="City Location"
+          name="location"
+          onChange={handleChange}
+        />
         <input
           type="number"
           placeholder="min price"
           min={0}
           max={10000000}
-          name="min price"
+          name="minPrice"
+          onChange={(e) => handleChange(e)}
         />
         <input
           type="number"
           placeholder="max price"
           min={0}
           max={10000000}
-          name="max price"
+          name="maxPrice"
+          onChange={(e) => handleChange(e)}
         />
         <Link
-          to={`/list?type=${Query.type}&city=${Query.city}&minPrice=${Query.minPrice}&maxPrice=${Query.maxPrice}`}
+          to={`/list?type=${Query.type}&city=${Query.location}&minPrice=${Query.minPrice}&maxPrice=${Query.maxPrice}`}
         >
           <button>
             <Search className="searchIcon" />
