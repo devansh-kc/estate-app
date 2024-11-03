@@ -3,12 +3,15 @@ import "./profilePage.scss";
 import List from "../../components/List/List";
 import Chat from "../../components/chat/Chat";
 import { useSelector } from "react-redux";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useLoaderData, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { userLogOut } from "../../../ReduxSlice/userSlice";
 
 function ProfilePage() {
+  // const postDetailsLoader = useLoaderData();
+
+  // console.log(postDetailsLoader)
   const userInfo = useSelector((state) => state.user.userInfo);
   const navigate = useNavigate();
   const dispatch = useDispatch();

@@ -10,13 +10,17 @@ import {
   ProfilePage,
   SignUp,
   RequireAuth,
-  SinglePage
+  SinglePage,
 } from "./routes/index.js";
 import { Provider } from "react-redux";
 import store from "../reduxStore/Store.js";
 import UpdateProfilePage from "./routes/profileUpdate/UpdateProfilePage.jsx";
 import NewPostPage from "./routes/new Posts Page/NewPostPage.jsx";
-import { listPageLoader, singlePageLoader } from "./loader/Loader.js";
+import {
+  listPageLoader,
+  profilePageLoader,
+  singlePageLoader,
+} from "./loader/Loader.js";
 
 const router = createBrowserRouter([
   {
@@ -42,7 +46,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/list/:id",
-        element: <SinglePage/>,
+        element: <SinglePage />,
         loader: singlePageLoader,
       },
       {
@@ -58,6 +62,7 @@ const router = createBrowserRouter([
       {
         path: "/profile",
         element: <ProfilePage />,
+        // loader: profilePageLoader,
       },
       {
         path: "/updateProfile",

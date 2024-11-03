@@ -1,6 +1,5 @@
-import React, { Children } from "react";
-import { useLoaderData, useParams } from "react-router-dom";
-import { singlePostData, userData } from "../../../data/dummydata";
+import React, { Children, useState } from "react";
+import { useLoaderData, useNavigate, useParams } from "react-router-dom";
 import "./singlePage.scss";
 import Slider from "../../components/Slider/Slider";
 import {
@@ -16,6 +15,8 @@ import {
   UtensilsCrossed,
 } from "lucide-react";
 import Map from "../../components/Map/Map";
+import axios from "axios";
+import { useSelector } from "react-redux";
 
 function FeatureComponent({ image, content, spanContent }) {
   return (
@@ -53,7 +54,32 @@ function NearbyPlacesComponent({ icon, spanContent, text }) {
 function SinglePage() {
   const { id } = useParams();
   const singlePageData = useLoaderData();
-  
+  const [error, setError] = useState("");
+  const [isSaved, setIsSaved] = useState(singlePageData.isSaved);
+  const currentUser = useSelector((state) => state.user.userInfo);
+  const navigate = useNavigate();
+
+  async function handleSave() {
+    if (!currentUser) {
+      navigate("/login");
+    }
+    try {
+      setIsSaved((prev) => !prev);
+      const result = await axios.post(
+        "http://localhost:8000/api/user/save",
+        {
+          postId: singlePageData.id,
+        },
+        { withCredentials: true }
+      );
+      console.log(result);
+      setError("");
+    } catch (error) {
+      console.log(error);
+      setError(error.data.message);
+      setIsSaved((prev) => !prev);
+    }
+  }
 
   return (
     <div className="singlePageContainer">
@@ -163,9 +189,16 @@ function SinglePage() {
                 <MessageSquare />
                 <span>Send a Message</span>
               </button>
-              <button>
+              <button
+                onClick={handleSave}
+                style={
+                  isSaved
+                    ? { backgroundColor: "#fece51" }
+                    : { backgroundColor: "white" }
+                }
+              >
                 <Bookmark />
-                <span>Save the Place</span>
+                <span>{isSaved ? "Place Saved" : "Save the Place"}</span>
               </button>
             </div>
           </div>

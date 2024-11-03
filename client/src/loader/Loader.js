@@ -17,7 +17,6 @@ export const singlePageLoader = async ({ request, params }) => {
 };
 
 export const listPageLoader = async ({ request, params }) => {
-  console.log(request.url.split("?")[1])
   const query = request.url.split("?")[1];
   const response = await axios.get(`http://localhost:8000/api/posts?${query}`, {
     withCredentials: true,
@@ -26,3 +25,14 @@ export const listPageLoader = async ({ request, params }) => {
     postResponse: response.data.posts,
   });
 };
+
+export const profilePageLoader = async () => {
+  const PostPromise = await axios.get(
+    `http://localhost:8000/api/user/profilePosts`,
+    {
+      withCredentials: true,
+    }
+  );
+  return PostPromise
+}
+
