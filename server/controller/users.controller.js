@@ -99,6 +99,12 @@ export async function profilePost(req, res) {
   try {
     // TODO: mereko auth middle ware  me se id fetch karni hai verify karna hai aur usko based on that id agar saved Post hai aur us specific person ki post hai toh fetch karni hai
     const userId = req.userId;
+    const postsMadeByCurrentUser = await prisma.post.findMany({
+      where: {
+        UserId: userId,
+      },
+    });
+
     const savedPost = await prisma.savedPosts.findMany({
       where: {
         userId: userId,
@@ -107,8 +113,7 @@ export async function profilePost(req, res) {
         post: true,
       },
     });
-
-    return res.status(200).json({ savedPost });
+    return res.status(200).json({ postsMadeByCurrentUser, savedPost });
   } catch (error) {
     console.log("error from profilePost route", error);
     return res.status(500).json({ message: "Failed to get users" });

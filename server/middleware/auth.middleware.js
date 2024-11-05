@@ -8,6 +8,7 @@ export async function AuthenticationMiddleware(req, res, next) {
     }
     const decryptedToken = jwt.verify(token, process.env.JWT_SECRET_KEY);
     req.userId = decryptedToken.id;
+    
     next();
 
   } catch (error) {

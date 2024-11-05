@@ -33,6 +33,7 @@ export const profilePageLoader = async () => {
       withCredentials: true,
     }
   );
-  return PostPromise
-}
-
+  return defer({
+    postResponse: PostPromise.data,
+  });
+};

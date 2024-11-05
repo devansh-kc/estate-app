@@ -7,11 +7,13 @@ import { Navigate, useLoaderData, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { userLogOut } from "../../../ReduxSlice/userSlice";
+import { Await } from "react-router-dom";
+import { Suspense } from "react";
+import Card from "../../components/card/Card";
 
 function ProfilePage() {
-  // const postDetailsLoader = useLoaderData();
+  const { postResponse } = useLoaderData();
 
-  // console.log(postDetailsLoader)
   const userInfo = useSelector((state) => state.user.userInfo);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -27,6 +29,7 @@ function ProfilePage() {
     navigate("/");
   }
 
+  console.log(postResponse);
   return (
     <div className="profilePage">
       <div className="details">
@@ -60,11 +63,33 @@ function ProfilePage() {
             <h1>My List</h1>
             <button>Create New Post</button>
           </div>
-          <List />
+          <Suspense fallback={<p>Loading...</p>}>
+            <Await
+              resolve={postResponse.postsMadeByCurrentUser}
+              errorElement={<p>Error loading posts</p>}
+            >
+              {(posts) =>
+                posts.map((item) => {
+                  return <Card key={item.id} item={item} />;
+                })
+              }
+            </Await>
+          </Suspense>
           <div className="title">
             <h1>Saved List</h1>
           </div>
-          <List />
+          <Suspense fallback={<p>Loading...</p>}>
+            <Await
+              resolve={postResponse.savedPost}
+              errorElement={<p>Error loading posts</p>}
+            >
+              {(posts) =>
+                posts.map((item) => {
+                  return <Card key={item.id} item={item.post} />;
+                })
+              }
+            </Await>
+          </Suspense>
         </div>
       </div>
       <div className="chatContainer">
