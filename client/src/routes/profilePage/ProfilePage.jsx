@@ -12,7 +12,7 @@ import { Suspense } from "react";
 import Card from "../../components/card/Card";
 
 function ProfilePage() {
-  const { postResponse } = useLoaderData();
+  const { postResponse, chatPromise } = useLoaderData();
 
   const userInfo = useSelector((state) => state.user.userInfo);
   const navigate = useNavigate();
@@ -28,8 +28,6 @@ function ProfilePage() {
 
     navigate("/");
   }
-
-  console.log(postResponse);
   return (
     <div className="profilePage">
       <div className="details">
@@ -94,7 +92,20 @@ function ProfilePage() {
       </div>
       <div className="chatContainer">
         <div className="wrapper">
-          <Chat />
+          <Suspense fallback={<p>Loading...</p>}>
+            <Await
+              resolve={chatPromise.chat}
+              errorElement={<p>Error loading posts</p>}
+            >
+              {
+                (chats) => (
+                  // chats.map((chat) => {
+                  <Chat chats={chats} />
+                )
+                // })
+              }
+            </Await>
+          </Suspense>
         </div>
       </div>
     </div>

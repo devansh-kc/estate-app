@@ -8,14 +8,30 @@ export async function getChats(req, res) {
         "failed to get userToken try to login first before using chat functionality",
     });
   }
-  const chat = await prisma.chat.findMany({
-    where: {
-      userIds: {
-        hasSome: [userToken],
-      },
-    },
-  });
+
   try {
+    const chat = await prisma.chat.findMany({
+      where: {
+        userIds: {
+          hasSome: [userToken],
+        },
+      },
+    });
+
+    for (const userIdFromChat of chat) {
+      const receiverId = userIdFromChat.userIds.find((id) => id !== userToken);
+      const receiverDetails = await prisma.user.findUnique({
+        where: {
+          id: receiverId,
+        },
+        select: {
+          id: true,
+          avatar: true,
+          username: true,
+        },
+      });
+      userIdFromChat.receiver = receiverDetails;
+    }
     return res.status(200).json({ chat });
   } catch (error) {
     console.log(error);

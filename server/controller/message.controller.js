@@ -27,8 +27,17 @@ export async function addMessage(req, res) {
         userId,
       },
     });
+    await prisma.chat.update({
+      where: {
+        id: chatId,
+      },
+      data: {
+        seenBy: [userId],
+        lastMessage: content,
+      },
+    });
 
-    return res.status(200).json({ chat });
+    return res.status(200).json({ message });
   } catch (error) {
     console.log(error);
     return res

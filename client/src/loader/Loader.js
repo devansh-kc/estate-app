@@ -1,5 +1,6 @@
 import axios from "axios";
 import { defer } from "react-router-dom";
+import { apiRequest } from "../apiRequest/apiRequest";
 
 export const singlePageLoader = async ({ request, params }) => {
   try {
@@ -27,13 +28,11 @@ export const listPageLoader = async ({ request, params }) => {
 };
 
 export const profilePageLoader = async () => {
-  const PostPromise = await axios.get(
-    `http://localhost:8000/api/user/profilePosts`,
-    {
-      withCredentials: true,
-    }
-  );
+  const PostPromise = await apiRequest(`user/profilePosts`);
+  const ChatPromise = await apiRequest("chats/");
+
   return defer({
     postResponse: PostPromise.data,
+    chatPromise: ChatPromise.data,
   });
 };
