@@ -22,7 +22,7 @@
       padding-right: 50px;
       display: flex;
       flex-direction: column;
-      gap: 50px;
+      gap: 20px;
 
       .title {
         display: flex;
@@ -34,7 +34,7 @@
         }
 
         button {
-          padding: 12px 24px;
+          padding: 11px 22px;
           background-color: #fece51;
           cursor: pointer;
           border: none;
@@ -82,8 +82,9 @@
     }
 
     .wrapper {
+      // flex: 2;
       padding: 0px 20px;
-      height: 100%;
+      // height: 100
     }
   }
 }
