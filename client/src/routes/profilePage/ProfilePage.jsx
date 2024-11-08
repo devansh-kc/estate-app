@@ -92,20 +92,15 @@ function ProfilePage() {
       </div>
       <div className="chatContainer">
         <div className="wrapper">
-          <Suspense fallback={<p>Loading...</p>}>
+          {/* <Suspense fallback={<p>Loading...</p>}>
             <Await
               resolve={chatPromise.chat}
               errorElement={<p>Error loading posts</p>}
             >
-              {
-                (chats) => (
-                  // chats.map((chat) => {
-                  <Chat chats={chats} />
-                )
-                // })
-              }
+              {(chats) => chats.map((chat) => {})}
             </Await>
-          </Suspense>
+          </Suspense> */}
+          <Chat chats={chatPromise.chat} />
         </div>
       </div>
     </div>

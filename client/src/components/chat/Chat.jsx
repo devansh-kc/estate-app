@@ -6,31 +6,41 @@ import { useSelector } from "react-redux";
 import { format } from "timeago.js";
 
 function Chat({ chats }) {
-  const [chat, setChat] = useState(false);
+  const [chat, setChat] = useState(null);
+  const [receiver, setReceiver] = useState([]);
   const currentUser = useSelector((state) => state.user.userInfo);
 
   async function handleSubmit(event) {
     event.preventDefault();
     const formData = new FormData(event.target);
 
-    const text = formData.get("text");
+    const text = formData.get("message");
     if (!text) return;
     try {
-      chat;
-      const result = await apiRequest.post("/messages/" + chat.chat.id, {
-        text,
+      const result = await apiRequest.post(`/message/${chat.chat.id}`, {
+        content: text,
       });
-      console.log(result);
+      setChat((prev) => ({
+        ...prev,
+        Message: [...prev.Message, result.data.message],
+      }));
+      event.target.reset();
     } catch (error) {
       console.log(error);
     }
   }
 
+  console.log(currentUser);
+  console.log({ ...chat });
+
   async function handleOpenChat(id, receiver) {
+
+
     try {
       const result = await apiRequest(`/chats/${id}`);
-      console.log(result.data);
-      setChat({ ...result.data, receiver });
+
+      setChat({ ...result.data });
+      setReceiver({ ...receiver });
     } catch (error) {
       console.log(error);
     }
@@ -57,9 +67,9 @@ function Chat({ chats }) {
                 chat.receiver.avatar ||
                 "https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI="
               }
-              alt={chat.receiver.username}
+              alt={receiver.username}
             />
-            <span>{chat.receiver.username}</span>
+            <span>{receiver.username}</span>
             <p>{chat.lastMessage}</p>
           </div>
         ))}
@@ -70,42 +80,40 @@ function Chat({ chats }) {
             <div className="user">
               <img
                 src={
-                  chat.receiver.avatar ||
+                  chat.receiver?.avatar ||
                   "https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI="
                 }
-                alt={chat.receiver.username}
+                alt={receiver.username}
               />
-              {chat.receiver.username}
+              {receiver.username}
             </div>
             <span className="close" onClick={() => setChat((prev) => !prev)}>
               <X />
             </span>
           </div>
           <div className="center">
-            {chat.chat.Message.map((message) => (
-              <div
-                className="chatMessage"
-                key={message.id}
-                style={{
-                  alignSelf:
-                    message.userId === currentUser.id ? "right" : "left",
-                  textAlign:
-                    message.userId === currentUser.id
-                      ? "flex-end"
-                      : "flex-start",
-                }}
-              >
-                <p>{message.message}</p>
-                <span>{format(message.createdAt)}</span>
-              </div>
-            ))}
-            <div className="chatMessage own">
-              <p>Lorem ipsum dolor sit amet</p>
-              <span>1 hour ago</span>
-            </div>
+            {chat.chat.Message.map((message) => {
+              return (
+                <div
+                  className="chatMessage"
+                  key={message.id}
+                  style={{
+                    alignSelf:
+                      message.userId === currentUser.id
+                        ? "flex-end"
+                        : "flex-start",
+                    textAlign:
+                      message.userId === currentUser.id ? "right" : "left",
+                  }}
+                >
+                  <p>{message.message}</p>
+                  <span>{format(message.createdAt)}</span>
+                </div>
+              );
+            })}
           </div>
-          <form className="bottom" onSubmit={handleSubmit}>
-            <input type="text" placeholder="message" />
+          <form className="bottom" onSubmit={(e) => handleSubmit(e)}>
+            <input type="text" placeholder="message" name="message" />
             <button>Send</button>
           </form>
         </div>
