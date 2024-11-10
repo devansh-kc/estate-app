@@ -47,7 +47,7 @@ export async function getSingleChat(req, res) {
         id: id,
       },
       include: {
-        Message: {
+        messages: {
           orderBy: {
             createdAt: "asc",
           },
@@ -69,7 +69,6 @@ export async function getSingleChat(req, res) {
         },
       });
     }
-
 
     // const LoggedInUser = chat.userIds[0];
     // if (LoggedInUser !== userId) {

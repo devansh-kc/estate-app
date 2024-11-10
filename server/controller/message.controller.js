@@ -4,7 +4,6 @@ export async function addMessage(req, res) {
   const { chatId } = req.params;
   const userId = req.userId;
   const { content } = req.body;
-  
 
   try {
     const chat = await prisma.chat.findUnique({
@@ -15,7 +14,7 @@ export async function addMessage(req, res) {
         },
       },
       include: {
-        Message: true,
+        messages: true,
       },
     });
     if (!chat) {
@@ -45,4 +44,23 @@ export async function addMessage(req, res) {
       .status(500)
       .json({ message: "Something went wrong while adding chat " });
   }
+}
+
+export async function deleteMessage(req, res) {
+  const { chatId } = req.params;
+
+  await prisma.message.deleteMany({
+    where: {
+      userId: req.userId,
+    },
+  });
+  await prisma.chat.update({
+    where: {
+      id: chatId,
+    },
+    data: {
+      seenBy: [null],
+      lastMessage: "",  
+    },
+  });
 }
