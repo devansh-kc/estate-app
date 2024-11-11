@@ -8,6 +8,7 @@ const io = new Server({
 let onlineUser = [];
 const addUser = (userId, socketId) => {
   const existingUser = onlineUser.find((user) => user.userId === userId);
+  console.log(existingUser)
   if (!existingUser) {
     onlineUser.push({ userId, socketId });
   }
@@ -27,7 +28,8 @@ io.on("connection", (socket) => {
     deleteUser(socket.id);
   });
   socket.on("sendMessage", ({ receiverId, data }) => {
-    console.log(receiverId);
+    const receiver = getUser(receiverId);
+    io.to(receiver.socket.id).emit("getMessage", data);
   });
 });
 

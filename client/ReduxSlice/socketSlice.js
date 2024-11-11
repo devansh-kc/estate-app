@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { io, Socket } from "socket.io-client";
+import { socket } from "../socketMiddleware/socketMiddleware";
 const initialState = {
-  chatInfo: io("http://localhost:4000"),
+  chatInfo: socket,
 };
 
 export const SocketSlice = createSlice({
@@ -14,11 +15,6 @@ export const SocketSlice = createSlice({
       }
     },
     userMessage: (state, payload) => {
-      console.log(state);
-      state.chatInfo.emit("sendMessage", {
-        receiverId: payload.id,
-        data: payload.data,
-      });
     },
   },
 });

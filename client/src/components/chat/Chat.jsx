@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./chat.scss";
 import { Cross, X } from "lucide-react";
 import { apiRequest } from "../../apiRequest/apiRequest";
@@ -52,6 +52,15 @@ function Chat({ chats }) {
     }
   }
 
+  useEffect(() => {
+    if (socketContext && chat) {
+      socketContext.on("getMessage", (data) => {
+        if (chat.id === data.chatId) {
+          console.log(data);
+        }
+      });
+    }
+  }, [socketContext, socketContext]);
   return (
     <div className="chat">
       <div className="messages">
