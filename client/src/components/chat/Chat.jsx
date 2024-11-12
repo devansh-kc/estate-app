@@ -4,13 +4,13 @@ import { Cross, X } from "lucide-react";
 import { apiRequest } from "../../apiRequest/apiRequest";
 import { useDispatch, useSelector } from "react-redux";
 import { format } from "timeago.js";
-import { userMessage } from "../../../ReduxSlice/socketSlice";
+import { socketMiddleware } from "../../../socketMiddleware/socketMiddleware";
+import { socket } from "../../../socketMiddleware/socketMiddleware";
 
 function Chat({ chats }) {
   const [chat, setChat] = useState(null);
   const [receiver, setReceiver] = useState([]);
   const currentUser = useSelector((state) => state.user.userInfo);
-  const socketContext = useSelector((state) => state.socket.chatInfo);
   const dispatch = useDispatch();
 
   async function handleSubmit(event) {
@@ -28,12 +28,7 @@ function Chat({ chats }) {
         ...prev,
         messages: [...prev.messages, result.data.message],
       }));
-      dispatch(
-        userMessage({
-          id: receiver.id,
-          data: JSON.stringify(result.data.message),
-        })
-      );
+      socketMiddleware(receiver.id, result.data.message);
       event.target.reset();
     } catch (error) {
       console.log(error);
@@ -45,7 +40,6 @@ function Chat({ chats }) {
       const result = await apiRequest(`/chats/${id}`);
 
       setChat(result.data.chat);
-      console.log(receiver);
       setReceiver({ ...receiver });
     } catch (error) {
       console.log(error);
@@ -53,14 +47,17 @@ function Chat({ chats }) {
   }
 
   useEffect(() => {
-    if (socketContext && chat) {
-      socketContext.on("getMessage", (data) => {
-        if (chat.id === data.chatId) {
-          console.log(data);
-        }
-      });
+    if (chat && socket) {
+      const handleGetMessage = (data) => {
+        console.log(data);
+      };
+      socket.on("getMessage", handleGetMessage);
+
+      return () => {
+        socket.off("getMessage", handleGetMessage);
+      };
     }
-  }, [socketContext, socketContext]);
+  }, [socket, chat]);
   return (
     <div className="chat">
       <div className="messages">

@@ -2,12 +2,11 @@ import { io } from "socket.io-client";
 
 export const socket = io("http://localhost:4000");
 
-export const socketMiddleware = (store) => (next) => (action) => {
-  if (action.type === "socket/userMessage") {
+export const socketMiddleware = (receiverid, data) => {
+  if (socket.connected) {
     socket.emit("sendMessage", {
-      receiverId: action.payload.id,
-      data: JSON.parse(action.payload.data),
+      receiverid: receiverid,
+      data,
     });
   }
-  return next(action);
 };

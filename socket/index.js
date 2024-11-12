@@ -8,16 +8,15 @@ const io = new Server({
 let onlineUser = [];
 const addUser = (userId, socketId) => {
   const existingUser = onlineUser.find((user) => user.userId === userId);
-  console.log(existingUser)
   if (!existingUser) {
     onlineUser.push({ userId, socketId });
   }
 };
 const deleteUser = (socketId) => {
-  const existingUser = onlineUser.filter((user) => user.socketId === socketId);
+  onlineUser = onlineUser.filter((user) => user.socketId !== socketId);
 };
 const getUser = (userId) => {
-  onlineUser = onlineUser.find((user) => user.userId === userId);
+  return onlineUser.find((user) => user.userId === userId);
 };
 
 io.on("connection", (socket) => {
@@ -27,9 +26,12 @@ io.on("connection", (socket) => {
   socket.on("disconnect", () => {
     deleteUser(socket.id);
   });
-  socket.on("sendMessage", ({ receiverId, data }) => {
-    const receiver = getUser(receiverId);
-    io.to(receiver.socket.id).emit("getMessage", data);
+  socket.on("sendMessage", (receiverid) => {
+    const receiver = getUser(receiverid.receiverid);
+    if (!receiver) {
+      addUser(receiverid.data, socket.id);
+      io.to(onlineUser.socketId).emit("getMessage", onlineUser.userId);
+    }
   });
 });
 
