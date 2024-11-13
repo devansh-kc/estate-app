@@ -12,6 +12,7 @@ const loadFromLocalStorage = (key) => {
 
 const initialState = {
   userInfo: loadFromLocalStorage("userInformation") || null,
+  userNotification: 0,
 };
 
 export const UserSlice = createSlice({
@@ -26,7 +27,18 @@ export const UserSlice = createSlice({
       state.userInfo = null;
       localStorage.removeItem("userInformation");
     },
+    totalNotification: (state, action) => {
+      state.userNotification = action.payload;
+    },
+    decreaseNotificationCount: (state, action) => {
+      state.userNotification = action.payload;
+    },
   },
 });
 
-export const { userLogin, userLogOut } = UserSlice.actions;
+export const {
+  userLogin,
+  userLogOut,
+  totalNotification,
+  decreaseNotificationCount,
+} = UserSlice.actions;

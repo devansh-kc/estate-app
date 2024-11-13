@@ -26,11 +26,14 @@ io.on("connection", (socket) => {
   socket.on("disconnect", () => {
     deleteUser(socket.id);
   });
-  socket.on("sendMessage", (receiverid) => {
-    const receiver = getUser(receiverid.receiverid);
+  socket.on("sendMessage", ({ receiverId, data }) => {
+    console.log(onlineUser);
+    const receiver = getUser(receiverId);
     if (!receiver) {
-      addUser(receiverid.data, socket.id);
-      io.to(onlineUser.socketId).emit("getMessage", onlineUser.userId);
+      addUser(data.userId, socket.id);
+      console.log(onlineUser)
+
+      io.to(onlineUser.socketId).emit("getMessage");
     }
   });
 });

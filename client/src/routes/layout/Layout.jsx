@@ -3,7 +3,7 @@ import Navbar from "../../components/navbar/navbar";
 import { Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
-import "./layout.scss"
+import "./layout.scss";
 
 function Layout() {
   return (
@@ -25,7 +25,7 @@ function RequireAuth() {
     <Navigate to="/login" />
   ) : (
     <div className="layout">
-      <div className="navbar">
+      <div className="navbar" >
         <Navbar />
       </div>
       <div className="content">

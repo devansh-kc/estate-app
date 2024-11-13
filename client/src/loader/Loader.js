@@ -16,7 +16,7 @@ export const singlePageLoader = async ({ request, params }) => {
     throw error;
   }
 };
-
+ 
 export const listPageLoader = async ({ request, params }) => {
   const query = request.url.split("?")[1];
   const response = await axios.get(`http://localhost:8000/api/posts?${query}`, {

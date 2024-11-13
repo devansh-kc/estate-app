@@ -59,7 +59,6 @@ export async function deleteUser(req, res) {
     res.status(500).json({ message: "Failed to get users" });
   }
 }
-export async function getUsersId(req, res) {}
 
 export async function savedPost(req, res) {
   const postId = req.body.postId;
@@ -117,5 +116,28 @@ export async function profilePost(req, res) {
   } catch (error) {
     console.log("error from profilePost route", error);
     return res.status(500).json({ message: "Failed to get users" });
+  }
+}
+
+export async function notificationCount(req, res) {
+  const userId = req.userId;
+  try {
+    const notification = await prisma.chat.count({
+      where: {
+        userIds: {
+          hasSome: [userId],
+        },
+        NOT: {
+          seenBy: {
+            hasSome: [userId],
+          },
+        },
+      },
+    });
+    return res.status(200).json({ notification });
+  } catch (error) {
+    res
+      .status(500)
+      .json("something went wrong while fetching notification count");
   }
 }

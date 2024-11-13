@@ -1,11 +1,20 @@
 import React, { useState } from "react";
 import "./navbar.scss";
-import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { Link, useLoaderData } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { apiRequest } from "../../apiRequest/apiRequest";
+import { totalNotification } from "../../../ReduxSlice/userSlice";
 
 function Navbar() {
   const [open, setOpen] = useState(false);
+  const dispatch = useDispatch();
   const userData = useSelector((state) => state.user.userInfo);
+  const userNotification = useSelector((state) => state.user.userNotification);
+  const notificationLoader = async () => {
+    const notificationPromise = await apiRequest.get(`user/notificationCount`);
+    dispatch(totalNotification(notificationPromise.data.notification));
+  };
+  notificationLoader();
   return (
     <nav>
       <div className="left">
@@ -30,7 +39,9 @@ function Navbar() {
             />
             <span>{userData.username}</span>
             <Link to="/profile" className="profile">
-              <div className="notification">3</div>
+              {userNotification > 0 && (
+                <div className="notification">{userNotification}</div>
+              )}
               <span>Profile</span>
             </Link>
           </div>

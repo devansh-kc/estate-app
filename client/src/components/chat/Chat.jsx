@@ -1,17 +1,26 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./chat.scss";
 import { Cross, X } from "lucide-react";
 import { apiRequest } from "../../apiRequest/apiRequest";
 import { useDispatch, useSelector } from "react-redux";
 import { format } from "timeago.js";
-import { socketMiddleware } from "../../../socketMiddleware/socketMiddleware";
-import { socket } from "../../../socketMiddleware/socketMiddleware";
+import { decreaseNotificationCount } from "../../../ReduxSlice/userSlice";
 
 function Chat({ chats }) {
   const [chat, setChat] = useState(null);
   const [receiver, setReceiver] = useState([]);
   const currentUser = useSelector((state) => state.user.userInfo);
   const dispatch = useDispatch();
+  const messageEndRef = useRef();
+
+  // if (chat && socket.connected) {
+  //   socket.on("getMessage", (data) => {
+  //     console.log(data);
+  //   });
+  // }
+  useEffect(() => {
+    messageEndRef.current?.scrollIntoView({ behaviour: "smooth" });
+  }, [chat]);
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -28,7 +37,7 @@ function Chat({ chats }) {
         ...prev,
         messages: [...prev.messages, result.data.message],
       }));
-      socketMiddleware(receiver.id, result.data.message);
+      // socketMiddleware({ receiver: receiver.id, data: result.data.message });
       event.target.reset();
     } catch (error) {
       console.log(error);
@@ -40,24 +49,16 @@ function Chat({ chats }) {
       const result = await apiRequest(`/chats/${id}`);
 
       setChat(result.data.chat);
+      if (!result.data.seenBy.includes(currentUser.id)) {
+        dispatch(decreaseNotificationCount(0));
+      }
+
       setReceiver({ ...receiver });
     } catch (error) {
       console.log(error);
     }
   }
 
-  useEffect(() => {
-    if (chat && socket) {
-      const handleGetMessage = (data) => {
-        console.log(data);
-      };
-      socket.on("getMessage", handleGetMessage);
-
-      return () => {
-        socket.off("getMessage", handleGetMessage);
-      };
-    }
-  }, [socket, chat]);
   return (
     <div className="chat">
       <div className="messages">
@@ -95,7 +96,7 @@ function Chat({ chats }) {
             <div className="user">
               <img
                 src={
-                  chat.receiver?.avatar ||
+                  receiver?.avatar ||
                   "https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI="
                 }
                 alt={receiver.username}
@@ -126,6 +127,7 @@ function Chat({ chats }) {
                 </div>
               );
             })}
+            <div ref={messageEndRef}></div>
           </div>
           <form className="bottom" onSubmit={(e) => handleSubmit(e)}>
             <input type="text" placeholder="message" name="message" />

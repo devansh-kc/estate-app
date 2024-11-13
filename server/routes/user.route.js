@@ -5,6 +5,7 @@ import {
   deleteUser,
   updateUser,
   savedPost,
+  notificationCount,
 } from "../controller/users.controller.js";
 import { profilePost } from "../controller/users.controller.js";
 
@@ -15,10 +16,7 @@ router.get("/", getUsers);
 router.patch("/:id", AuthenticationMiddleware, updateUser);
 router.delete("/:id", deleteUser);
 router.post("/save", AuthenticationMiddleware, savedPost);
-router.get(
-  "/profilePosts",
-  AuthenticationMiddleware,
-  profilePost
-);
+router.get("/profilePosts", AuthenticationMiddleware, profilePost);
+router.get("/notificationCount", AuthenticationMiddleware, notificationCount);
 
 export default router;
